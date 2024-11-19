@@ -12,11 +12,11 @@ Hover over any of the attacks to view the description of the respective attack.
 ## Installation
 To install Zamorak tracker, copy & paste this link into your browser:<br/>
 ```
-alt1://addapp/https://holycoil.nl/alt1/zamorak/appconfig.json
+alt1://addapp/https://zerogwafa.github.io/Zamorak-order/appconfig.json
 ```
 
 Or go to this URL in the alt1 browser:<br/>
-https://holycoil.nl/alt1/zamorak
+https://zerogwafa.github.io/Zamorak-order/
 
 ## Requirements
 - Alt1 toolkit must be installed, you can install that [here](https://runeapps.org/alt1).
