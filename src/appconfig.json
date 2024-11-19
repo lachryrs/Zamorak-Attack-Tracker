@@ -1,6 +1,6 @@
 {
-	"appName": "Zamorak order",
-	"description": "Zamorak order",
+	"appName": "Zamorak Attack Tracker",
+	"description": "Zamorak Attack Tracker",
 	"appUrl": "./index.html",
 	"configUrl": "./appconfig.json",
 	"iconUrl": "./Zamorak_chathead.png",
