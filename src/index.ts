@@ -76,8 +76,8 @@ const infernal_tomb = {
   the demons (ideally :caroming4: :gchain: → ability)
 - Players must go to the pad with the same 
   corresponding rune they received overhead
-    - At higher enrages, it is highly suggested to pre-stun 
-      Zamorak and defeat all demons before exiting
+	- At higher enrages, it is highly suggested to pre-stun 
+	  Zamorak and defeat all demons before exiting
 `,
 };
 const adrenaline_cage = {
@@ -203,6 +203,33 @@ function getPhase() {
 	return current_phase;
 }
 
+// Function to calculate next special attack if phasing immediately
+function getNextSpecImmediate(currentPhase, nextSpec) {
+	// Get the next phase
+	let nextPhase = currentPhase + 1;
+	if (nextPhase > 6) nextPhase = 1; // Loop back to phase 1 if needed
+	
+	// Following the red arrow in the chart
+	// Always goes to 3rd spec unless it was the second spec skipped
+	let nextSpecIndex = nextSpec == 1 ? 0 : 2;
+	
+	return special_attacks["p" + nextPhase][nextSpecIndex];
+}
+
+// Function to calculate next special attack if delaying phase
+function getNextSpecDelayed(currentPhase, nextSpec) {
+	// Get the next phase
+	let nextPhase = currentPhase + 1;
+	if (nextPhase > 6) nextPhase = 1; // Loop back to phase 1 if needed
+	
+	// Following the black arrow in the chart
+	// After doing the current spec, go back and down
+	let delayedSpecIndex = nextSpec - 1;
+	if (delayedSpecIndex < 0) delayedSpecIndex = 2;
+	
+	return special_attacks["p" + nextPhase][delayedSpecIndex];
+}
+
 var last_phase = 1;
 var next_spec = 0;
 var skipped_spec = true;
@@ -246,6 +273,7 @@ function specAttackTracker(lines) {
 				if (next_spec > 2) next_spec = 0;
 
 				console.log("Next spec: " + next_spec + " Phase: " + current_phase);
+				updatePhaseTransitionInfo(current_phase, next_spec);
 				break;
 			}
 		}
@@ -253,6 +281,26 @@ function specAttackTracker(lines) {
 
 	document.querySelectorAll("#spec tr").forEach(el => el.classList.remove("selected"));
 	document.querySelectorAll("#spec tr")[next_spec].classList.add("selected");
+
+	// Update the phase transition info whenever we update the selected spec
+	updatePhaseTransitionInfo(current_phase, next_spec);
+}
+
+// New function to update the phase transition information
+function updatePhaseTransitionInfo(currentPhase, nextSpec) {
+	const nextSpecImmediate = getNextSpecImmediate(currentPhase, nextSpec);
+	const nextSpecDelayed = getNextSpecDelayed(currentPhase, nextSpec);
+	
+	const immediateElement = document.querySelector("#next-spec-immediate") as HTMLElement;
+	const delayedElement = document.querySelector("#next-spec-delayed") as HTMLElement;
+	
+	if (immediateElement && delayedElement) {
+		immediateElement.innerText = nextSpecImmediate.name;
+		immediateElement.setAttribute("title", nextSpecImmediate.tooltip);
+		
+		delayedElement.innerText = nextSpecDelayed.name;
+		delayedElement.setAttribute("title", nextSpecDelayed.tooltip);
+	}
 }
 
 function updateUI(current_phase) {
@@ -262,4 +310,7 @@ function updateUI(current_phase) {
 		el.innerText = special_attacks["p" + current_phase][index].name;
 		el.setAttribute("title", special_attacks["p" + current_phase][index].tooltip);
 	});
+
+	// Update the phase transition info when UI is updated
+	updatePhaseTransitionInfo(current_phase, next_spec);
 }
