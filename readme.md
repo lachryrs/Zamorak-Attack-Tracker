@@ -1,4 +1,7 @@
-NOTE: Original by DaStewie.  Forked and updated with their permission
+NOTE: Original by DaStewie.
+
+Forked to help learn what specs happen in next phase if you go ahead and phase, or wait.
+
 
 # Zamorak Attack Tracker
 
